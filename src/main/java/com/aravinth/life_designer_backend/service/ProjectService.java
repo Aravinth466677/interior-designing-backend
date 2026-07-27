@@ -54,7 +54,9 @@ public class ProjectService {
             CreateProjectRequest request,
             MultipartFile heroImage,
             MultipartFile coverImage) throws IOException {
+        System.out.println("1. createProject started");
         String heroImageUrl = cloudinaryService.uploadImage(heroImage);
+        System.out.println("2. hero uploaded");
 
         String coverImageUrl;
 
@@ -63,6 +65,7 @@ public class ProjectService {
         } else {
             coverImageUrl = cloudinaryService.uploadImage(coverImage);
         }
+        System.out.println("3. cover uploaded");
 
         Project project = Project.builder()
                 .title(request.getTitle())
@@ -74,6 +77,7 @@ public class ProjectService {
                 .build();
 
         Project savedProject = projectRepository.save(project);
+        System.out.println("4. project saved");
 
         return mapToResponse(savedProject);
     }
@@ -132,6 +136,7 @@ public class ProjectService {
     public void uploadGallery(
             Long projectId,
             List<MultipartFile> images) throws IOException {
+        System.out.println("5. gallery start");
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
@@ -152,6 +157,7 @@ public class ProjectService {
         }
 
         projectRepository.save(project);
+        System.out.println("6. gallery finished");
     }
 
     public void deleteGalleryImage(Long imageId) throws IOException {
