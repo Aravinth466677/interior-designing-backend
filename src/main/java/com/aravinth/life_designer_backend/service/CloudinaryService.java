@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class CloudinaryService {
 
-    private static final long MAX_FILE_SIZE = 30L * 1024 * 1024; // 30 MB
+    private static final long MAX_FILE_SIZE = 10L * 1024 * 1024; // 30 MB
     private static final long MAX_PIXELS = 50_000_000L;           // 50 MP
 
     private final Cloudinary cloudinary;
