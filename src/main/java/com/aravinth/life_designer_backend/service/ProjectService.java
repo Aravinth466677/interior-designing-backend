@@ -82,6 +82,9 @@ public class ProjectService {
 
     public List<ProjectResponse> getAllProjects() {
 
+        System.out.println("1. Entered getAllProjects");
+        System.out.println("2. Repository returned " + projects.size());
+
         return projectRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
