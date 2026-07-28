@@ -26,6 +26,14 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<java.util.Map<String, String>> loginInfo() {
+        return ResponseEntity.ok(java.util.Map.of(
+                "info", "Login endpoint requires a POST request with JSON body.",
+                "example_body", "{\"email\":\"admin@example.com\", \"password\":\"admin123\"}"
+        ));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
