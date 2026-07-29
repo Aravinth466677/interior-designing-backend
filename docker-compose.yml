@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: life_designer_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-life_designer_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Yaanai12345}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-life_designer_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  backend-app:
+    build: .
+    container_name: life_designer_backend
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres-db:5432/${POSTGRES_DB:-life_designer_db}
+      DATABASE_USERNAME: ${POSTGRES_USER:-postgres}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-Yaanai12345}
+      DATABASE_DRIVER: org.postgresql.Driver
+      DATABASE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      CLOUDINARY_NAME: ${CLOUDINARY_NAME:-dgxdlocja}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-638428425537241}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-y8LwBh2u99eRFFTHooE9URSUfxg}
+      SECRET_KEY: ${SECRET_KEY:-YourVeryLongSecretKeyMustBeAtLeast32CharactersLong123456789}
+      TOKEN_EXPIRATION: ${TOKEN_EXPIRATION:-86400000}
+      DEFAULT_ADMIN_NAME: ${DEFAULT_ADMIN_NAME:-admin@lifedesigner.com}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD:-admin123}
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  postgres_data:
