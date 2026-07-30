@@ -27,7 +27,10 @@ public class ProjectController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProjectResponse> createProject(
 
-            @ModelAttribute CreateProjectRequest request,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("category") String category,
+            @RequestParam(value = "location", required = false) String location,
 
             @RequestParam("heroImage") MultipartFile heroImage,
 
@@ -35,6 +38,13 @@ public class ProjectController {
             MultipartFile coverImage
 
     ) throws IOException {
+
+        CreateProjectRequest request = CreateProjectRequest.builder()
+                .title(title)
+                .description(description)
+                .category(category)
+                .location(location)
+                .build();
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(projectService.createProject(

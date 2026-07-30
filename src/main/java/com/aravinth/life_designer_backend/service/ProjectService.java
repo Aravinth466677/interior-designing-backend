@@ -162,9 +162,17 @@ public class ProjectService {
 
     public void deleteGalleryImage(Long imageId) throws IOException {
 
-        ProjectImage image = projectImageRepository.findById(imageId)
-                .orElseThrow(() ->
-                        new RuntimeException("Gallery image not found"));
+        java.util.Optional<ProjectImage> imageOpt = projectImageRepository.findById(imageId);
+        if (imageOpt.isEmpty()) {
+            System.out.println("Gallery image ID " + imageId + " already deleted or not found. Returning successfully.");
+            return;
+        }
+
+        ProjectImage image = imageOpt.get();
+
+        if (image.getProject() != null && image.getProject().getGallery() != null) {
+            image.getProject().getGallery().remove(image);
+        }
 
         cloudinaryService.deleteImage(image.getImageUrl());
 

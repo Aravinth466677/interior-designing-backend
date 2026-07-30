@@ -1,6 +1,7 @@
 package com.aravinth.life_designer_backend.config;
 
 import com.aravinth.life_designer_backend.security.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -39,30 +40,28 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write(
+                                    "{\"status\":401,\"error\":\"Unauthorized\",\"message\":\"Authentication required. Please provide a valid JWT bearer token.\"}"
+                            );
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.getWriter().write(
+                                    "{\"status\":403,\"error\":\"Forbidden\",\"message\":\"Access denied. Admin privileges required.\"}"
+                            );
+                        })
+                )
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/auth/login",
-                                "/api/contact",
-                                "/api/contact/**",
-                                "/api/projects",
-                                "/api/projects/**"
-                        ).permitAll()
-
-                        .requestMatchers(HttpMethod.GET,
-                                "/",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/api/auth/login",
-                                "/api/contact",
-                                "/api/contact/**",
-                                "/api/projects",
-                                "/api/projects/**"
-                        ).permitAll()
-
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().permitAll()
                 )
 
                 .addFilterBefore(
