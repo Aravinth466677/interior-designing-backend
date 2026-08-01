@@ -59,9 +59,34 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/**").permitAll()
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().permitAll()
+
+                        // Swagger / OpenAPI
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+
+                        // Public
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
+
+                        // Admin
+                        .requestMatchers(HttpMethod.POST, "/api/projects/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/projects/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/projects/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/projects/**").authenticated()
+
+                        .requestMatchers(HttpMethod.GET, "/api/contact/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/contact/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/contact/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/contact/**").authenticated()
+
+                        .anyRequest().authenticated()
                 )
 
                 .addFilterBefore(
@@ -76,7 +101,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 

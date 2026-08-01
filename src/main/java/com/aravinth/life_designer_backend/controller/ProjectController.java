@@ -32,10 +32,7 @@ public class ProjectController {
             @RequestParam("category") String category,
             @RequestParam(value = "location", required = false) String location,
 
-            @RequestParam("heroImage") MultipartFile heroImage,
-
-            @RequestParam(value = "coverImage", required = false)
-            MultipartFile coverImage
+            @RequestParam("heroImage") MultipartFile heroImage
 
     ) throws IOException {
 
@@ -49,8 +46,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(projectService.createProject(
                         request,
-                        heroImage,
-                        coverImage));
+                        heroImage));
     }
 
     @PostMapping(

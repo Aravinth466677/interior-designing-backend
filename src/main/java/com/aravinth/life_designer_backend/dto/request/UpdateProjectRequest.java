@@ -23,6 +23,4 @@ public class UpdateProjectRequest {
 
     @NotBlank(message = "Hero image is required")
     private String heroImage;
-
-    private String coverImage;
 }

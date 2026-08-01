@@ -1,7 +1,6 @@
 package com.aravinth.life_designer_backend.controller;
 
 import com.aravinth.life_designer_backend.dto.request.CreateContactRequest;
-import com.aravinth.life_designer_backend.dto.request.UpdateContactStatusRequest;
 import com.aravinth.life_designer_backend.dto.response.ContactResponse;
 import com.aravinth.life_designer_backend.service.ContactService;
 import jakarta.validation.Valid;
@@ -46,15 +45,4 @@ public class ContactController {
         return ResponseEntity.ok("Contact deleted successfully");
     }
 
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<ContactResponse> updateStatus(
-
-            @PathVariable Long id,
-
-            @RequestBody UpdateContactStatusRequest request) {
-
-        return ResponseEntity.ok(
-                contactService.updateStatus(id, request)
-        );
-    }
 }

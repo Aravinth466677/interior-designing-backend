@@ -44,7 +44,6 @@ public class ProjectService {
                 .category(project.getCategory())
                 .location(project.getLocation())
                 .heroImage(project.getHeroImage())
-                .coverImage(project.getCoverImage())
                 .gallery(gallery)
                 .createdAt(project.getCreatedAt())
                 .build();
@@ -52,20 +51,11 @@ public class ProjectService {
 
     public ProjectResponse createProject(
             CreateProjectRequest request,
-            MultipartFile heroImage,
-            MultipartFile coverImage) throws IOException {
+            MultipartFile heroImage) throws IOException {
         System.out.println("1. createProject started");
         String heroImageUrl = cloudinaryService.uploadImage(heroImage);
         System.out.println("2. hero uploaded");
 
-        String coverImageUrl;
-
-        if (coverImage == null || coverImage.isEmpty()) {
-            coverImageUrl = heroImageUrl;
-        } else {
-            coverImageUrl = cloudinaryService.uploadImage(coverImage);
-        }
-        System.out.println("3. cover uploaded");
 
         Project project = Project.builder()
                 .title(request.getTitle())
@@ -73,7 +63,6 @@ public class ProjectService {
                 .category(request.getCategory())
                 .location(request.getLocation())
                 .heroImage(heroImageUrl)
-                .coverImage(coverImageUrl)
                 .build();
 
         Project savedProject = projectRepository.save(project);
@@ -114,11 +103,6 @@ public class ProjectService {
         project.setLocation(request.getLocation());
         project.setHeroImage(request.getHeroImage());
 
-        if (request.getCoverImage() == null || request.getCoverImage().isBlank()) {
-            project.setCoverImage(request.getHeroImage());
-        } else {
-            project.setCoverImage(request.getCoverImage());
-        }
 
         Project updatedProject = projectRepository.save(project);
 

@@ -1,7 +1,6 @@
 package com.aravinth.life_designer_backend.service;
 
 import com.aravinth.life_designer_backend.dto.request.CreateContactRequest;
-import com.aravinth.life_designer_backend.dto.request.UpdateContactStatusRequest;
 import com.aravinth.life_designer_backend.dto.response.ContactResponse;
 import com.aravinth.life_designer_backend.entity.Contact;
 import com.aravinth.life_designer_backend.repository.ContactRepository;
@@ -55,20 +54,8 @@ public class ContactService {
                 .email(contact.getEmail())
                 .phone(contact.getPhone())
                 .message(contact.getMessage())
-                .status(contact.getStatus())
                 .createdAt(contact.getCreatedAt())
                 .build();
     }
 
-    public ContactResponse updateStatus(
-            Long id,
-            UpdateContactStatusRequest request) {
-
-        Contact contact = contactRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contact not found"));
-
-        contact.setStatus(request.getStatus());
-
-        return map(contactRepository.save(contact));
-    }
 }

@@ -33,8 +33,6 @@ public class Project {
     @Column(nullable = false)
     private String heroImage;
 
-    private String coverImage;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

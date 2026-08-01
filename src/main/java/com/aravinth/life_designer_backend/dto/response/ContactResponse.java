@@ -1,6 +1,5 @@
 package com.aravinth.life_designer_backend.dto.response;
 
-import com.aravinth.life_designer_backend.entity.ContactStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +22,4 @@ public class ContactResponse {
     private String message;
 
     private LocalDateTime createdAt;
-
-    private ContactStatus status;
 }

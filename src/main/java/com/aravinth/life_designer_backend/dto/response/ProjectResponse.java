@@ -24,8 +24,6 @@ public class ProjectResponse {
 
     private String heroImage;
 
-    private String coverImage;
-
     private List<String> gallery;
 
     private LocalDateTime createdAt;

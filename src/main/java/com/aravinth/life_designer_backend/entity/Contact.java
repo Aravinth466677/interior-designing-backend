@@ -29,13 +29,9 @@ public class Contact {
 
     private LocalDateTime createdAt;
 
-    @Enumerated(EnumType.STRING)
-    private ContactStatus status;
-
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();
-        status = ContactStatus.NEW;
     }
 
 }
