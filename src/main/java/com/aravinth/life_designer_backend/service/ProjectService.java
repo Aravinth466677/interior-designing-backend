@@ -2,6 +2,7 @@ package com.aravinth.life_designer_backend.service;
 
 import com.aravinth.life_designer_backend.dto.request.CreateProjectRequest;
 import com.aravinth.life_designer_backend.dto.request.UpdateProjectRequest;
+import com.aravinth.life_designer_backend.dto.response.GalleryImageResponse;
 import com.aravinth.life_designer_backend.dto.response.ProjectResponse;
 import com.aravinth.life_designer_backend.entity.Project;
 import com.aravinth.life_designer_backend.entity.ProjectImage;
@@ -31,10 +32,14 @@ public class ProjectService {
 
     private ProjectResponse mapToResponse(Project project) {
 
-        List<String> gallery = project.getGallery()
+        List<GalleryImageResponse> gallery = project.getGallery()
                 .stream()
                 .sorted(Comparator.comparing(ProjectImage::getDisplayOrder))
-                .map(ProjectImage::getImageUrl)
+                .map(image -> GalleryImageResponse.builder()
+                        .id(image.getId())
+                        .imageUrl(image.getImageUrl())
+                        .displayOrder(image.getDisplayOrder())
+                        .build())
                 .toList();
 
         return ProjectResponse.builder()
