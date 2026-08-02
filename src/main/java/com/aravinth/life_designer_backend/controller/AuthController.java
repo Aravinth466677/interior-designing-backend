@@ -51,4 +51,9 @@ public class AuthController {
 
         return ResponseEntity.ok(new LoginResponse(token));
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "Version 2";
+    }
 }
