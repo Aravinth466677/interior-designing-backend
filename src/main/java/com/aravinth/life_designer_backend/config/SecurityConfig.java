@@ -72,7 +72,7 @@ public class SecurityConfig {
 
                         // Public
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/projects/**","/api/sitemap.xml").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
 
                         // Admin

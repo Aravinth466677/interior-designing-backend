@@ -36,8 +36,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        System.out.println("Request Email: [" + request.getEmail() + "]");
 
         Optional<Admin> admin = adminRepository.findByEmail(request.getEmail());
+
+        System.out.println("Found: " + admin.isPresent());
 
         if (admin.isEmpty()) {
             return ResponseEntity.badRequest().body("Invalid Email");
