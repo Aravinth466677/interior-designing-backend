@@ -77,7 +77,13 @@ public class ProjectController {
     public ResponseEntity<ProjectResponse> getProjectById(
             @PathVariable Long id) {
 
-        return ResponseEntity.ok(projectService.getProjectById(id));
+        ProjectResponse response = projectService.getProjectById(id);
+
+        if (response == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")

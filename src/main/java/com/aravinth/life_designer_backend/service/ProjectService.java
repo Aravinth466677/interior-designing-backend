@@ -92,9 +92,14 @@ public class ProjectService {
     public ProjectResponse getProjectById(Long id) {
 
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElse(null);
+
+        if (project == null) {
+            return null;
+        }
 
         return mapToResponse(project);
+
     }
 
     public ProjectResponse updateProject(Long id, UpdateProjectRequest request) {
